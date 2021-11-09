@@ -2,6 +2,7 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include<string.h>
+
 #define MAX_LINE 1024
 #define MAX_SIZE 128
 
@@ -14,18 +15,18 @@ typedef struct _poly
 	position next;
 }poly;
 
-int nameEntry(char* nameOfFile);
-int readFile(char* nameOfFile, position head1, position head2);
-int multiply(position head1, position head2, position headMultiply);
-int add(position head1, position head2, position headSum);
-int merge(position nakon, position new);
-int DeleteAfter(position element);
-int freeMemory(position head);
-int print(position first);
-int parseString(char* buffer, position head);
-position create(int expo, int koef, position head);
-int sortedInput(position head, position new);
-int insertAfter(position after, position new);
+int nameEntry(char* );
+int readFile(char*, position, position);
+int multiply(position, position, position);
+int add(position, position, position);
+int merge(position, position);
+int DeleteAfter(position);
+int freeMemory(position);
+int print(position);
+int parseString(char*, position);
+position create(int, int, position);
+int sortedInput(position, position);
+int insertAfter(position, position);
 
 int main()
 {
@@ -264,21 +265,24 @@ int freeMemory(position head)
 	return 0;
 }
 
-int print(position first)
+int print(position head)
 {
-	position temp = first;
-	while (temp!=NULL)
+	position temp=head;
+	if(head==NULL)
+		printf("no polynomials");
+	while(temp!=NULL)
 	{
-		if (temp->next== NULL)
+	    if(temp->coeff == 0)temp = temp->next;
+	    else{
+		printf("%dx^%d",temp->coeff,temp->expo);
+		temp=temp->next;
+		if(temp!=NULL && temp->coeff != 0)
 		{
-			printf("%dx^%d", temp->coeff, temp->expo);
-		}
-		else
-		{
-			printf("%dx^%d", temp->coeff, temp->expo);
 			printf("+");
 		}
-		temp = temp->next;
+		else
+			printf("\n");
+		}
 	}
 	return 0;
 }
