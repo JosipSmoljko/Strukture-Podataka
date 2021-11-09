@@ -23,7 +23,7 @@ int DeleteAfter(position element);
 int freeMemory(position head);
 int print(position first);
 int parseString(char* buffer, position head);
-position createNew(int expo, int koef, position head);
+position create(int expo, int koef, position head);
 int sortedInput(position head, position new);
 int insertAfter(position after, position new);
 
@@ -72,7 +72,7 @@ int readFile(char* nameOfFile, position head1, position head2)
 	status = parseString(buffer, head1);
 	if (status == 0)
 	{
-		fgets(buffer, MAX_LINE, pfile);
+		fgets(buffer, MAX_LINE, fp);
 	}
 	else return -1;
 
@@ -80,7 +80,7 @@ int readFile(char* nameOfFile, position head1, position head2)
 	status = parseString(buffer, head2);
 	if (status == 0)
 	{
-		fgets(buffer, MAX_LINE, pfile);
+		fgets(buffer, MAX_LINE, fp);
 	}
 	else return -1;
 
@@ -98,16 +98,16 @@ int parseString(char* buffer, position head)
 		status = sscanf(tempBuffer, " %d %d %n", &coeff, &exponent, &num);
 		if (status == 2)
 		{
-			newElem = createNew(exponent, coeff, head);
+			newElem = create(exponent, coeff, head);
 		}
 		else return -1;
-		
-		if (!new)
+
+		if (!newElem)
 		{
 			return -1;
 		}
 
-		tempBuffer = tempBuffer + num; 
+		tempBuffer = tempBuffer + num;
 	}
 	return EXIT_SUCCESS;
 }
@@ -126,7 +126,7 @@ int sortedInput(position head, position new)
 }
 position create(int exponent, int coefficient, position head)
 {
-	position newElement = NULL; 
+	position newElement = NULL;
 	newElement = (position)malloc(sizeof(poly));
 
 	if (!newElement)
@@ -135,7 +135,7 @@ position create(int exponent, int coefficient, position head)
 		return NULL;
 	}
 
-	newElement->expo = exponent; 
+	newElement->expo = exponent;
 	newElement->coeff = coefficient;
 
 	sortedInput(head, newElement);
@@ -160,25 +160,25 @@ int add(position head1, position head2, position headSum)
 	{
 		if (first->expo == second->expo)
 		{
-			new=createNew(first->expo, first->coeff + second->coeff, result);
+			new=create(first->expo, first->coeff + second->coeff, result);
 			if (!new)
 			{
 				return -1;
 			}
-		
+
 			first = first->next;
 			second = second->next;
 		}
 		else if (first->expo > second->expo)
 		{
-			new=createNew(second->expo, second->coeff, result);
-		
+			new=create(second->expo, second->coeff, result);
+
 			second = second->next;
 		}
 		else
 		{
-			new=createNew(first->expo, first->coeff, result);
-	
+			new=create(first->expo, first->coeff, result);
+
 			first = first->next;
 		}
 	}
@@ -195,7 +195,7 @@ int add(position head1, position head2, position headSum)
 
 	while (temp != NULL)
 	{
-		createNew(temp->expo, temp->coeff, result);
+		create(temp->expo, temp->coeff, result);
 		temp = temp->next;
 	}
 
@@ -212,7 +212,7 @@ int multiply(position head1,position head2,position headMultiply)
 	{
 		for (second = head2->next; second != NULL; second = second->next)
 		{
-			position new = createNew(first->expo + second->expo, first->coeff * second->coeff, result);
+			position new = create(first->expo + second->expo, first->coeff * second->coeff, result);
 			if (!new)
 			{
 				return -1;
@@ -267,16 +267,15 @@ int freeMemory(position head)
 int print(position first)
 {
 	position temp = first;
-	printf("f(x) = ");
 	while (temp!=NULL)
 	{
 		if (temp->next== NULL)
 		{
-			printf("%dx^(%d)", temp->koef, temp->expo);
+			printf("%dx^%d", temp->coeff, temp->expo);
 		}
 		else
 		{
-			printf("%dx^(%d)", temp->koef, temp->expo);
+			printf("%dx^%d", temp->coeff, temp->expo);
 			printf("+");
 		}
 		temp = temp->next;
