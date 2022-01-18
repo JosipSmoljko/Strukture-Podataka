@@ -25,7 +25,7 @@ typedef struct _list{
 int InsertInListFromFile(LPosition head, char *fileName);
 int InsertInTreeFromFile(LPosition drzava,char *fileName);
 int SortListWhileInserting(LPosition head, LPosition newPerson);
-int InsertAfter(LPosition who, LPosition where);
+int InsertAfter(LPosition current, LPosition newEl);
 LPosition CreateListElement(char *drzava);
 int PrintList(LPosition first);
 int PrintTreeInOrder(TPosition current);
@@ -154,13 +154,14 @@ int SortListWhileInserting(LPosition head, LPosition newElement){
     return EXIT_SUCCESS;
 }
 
-int InsertAfter(LPosition who, LPosition where){
-
-    who -> next = where -> next;
-    where -> next = who;
+int InsertAfter(LPosition current, LPosition newEl)
+{
+    current -> next = newEl -> next;
+    newEl -> next = current;
 
     return EXIT_SUCCESS;
 }
+
 
 LPosition CreateListElement(char *drzava){
     LPosition newElement = NULL;
